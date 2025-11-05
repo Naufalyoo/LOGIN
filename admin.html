@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Data User Login (Google)</h1>
+    <table id="userTable">
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Email</th>
+          <th>Foto</th>
+          <th>Waktu Login</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    async function loadUsers() {
+      const res = await fetch('/api/users');
+      const users = await res.json();
+      const tbody = document.querySelector('#userTable tbody');
+      tbody.innerHTML = users.map(u => `
+        <tr>
+          <td>${u.name}</td>
+          <td>${u.email}</td>
+          <td><img src="${u.photo}" alt="user" width="40" height="40"></td>
+          <td>${new Date(u.time).toLocaleString()}</td>
+        </tr>
+      `).join('');
+    }
+    loadUsers();
+  </script>
+</body>
+</html>
